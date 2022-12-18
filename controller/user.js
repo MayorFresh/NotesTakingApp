@@ -41,7 +41,7 @@ const signup = async(req, res) => {
 
         //to display the user data after registration
         res.status(201).json(user)
-        console.log(" Registered Successfully")
+        console.log(user.email + " Registered Successfully")
     
     }
     catch(e) {
@@ -69,6 +69,47 @@ const getuser = async (req, res) => {
     }
 }
 
+//signin endpoint
+const signin = async (req, res) => {
+    try {
+        //to get the user's login info
+        const {email, password} = req.body
+
+        //to validate the user's input
+        if (!(email && password)) {
+            res.status(400).send("All input is required")
+        }
+
+        //to check the user's details in the database
+        const user = await User.findOne({email})
+        if (!user) {
+            res.status(401).send("invalid email")
+        } 
+
+        //decrypting the user's password
+        const userpassword = await bcrypt.compare(password, user.password)
+        if (user && userpassword) {
+            //create login token
+            const token = jwt.sign({user_id: user._id, email}, 
+                process.env.TOKEN_KEY,
+                {expiresIn: "7200"} //expires in 2 hours
+            )
+
+            //to save the token 
+            user.token = token
+
+            //to display the info of the logged in user
+            res.status(200).json(user)
+            console.log(user.email + " login successful")
+        } else {
+            res.status(400).send("Incorrect password")
+        }
+
+    }
+    catch(e) {
+        console.log(e)
+    }
+}
 
 
-module.exports = {signup, getuser}
+module.exports = {signup, getuser, signin}
