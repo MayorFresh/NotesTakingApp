@@ -1,0 +1,30 @@
+{
+  "name": "notestakingapp",
+  "version": "1.0.0",
+  "description": "An app that allows a user to perform basic note taking operations using Node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MayorFresh/NotesTakingApp.git"
+  },
+  "author": "Mayorfresh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MayorFresh/NotesTakingApp/issues"
+  },
+  "homepage": "https://github.com/MayorFresh/NotesTakingApp#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "chalk": "^5.2.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.8.0",
+    "nodemon": "^2.0.20",
+    "validation": "0.0.1",
+    "validator": "^13.7.0"
+  }
+}
