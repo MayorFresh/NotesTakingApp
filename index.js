@@ -6,6 +6,8 @@ const user = require('./routes/user')
 //to run the mongoose directly from the database
 require('./db/database')
 
+//built-in middleware to parse requests
+app.use(express.json())
 
 // default api 
 app.use('/api/v1/notesapp', user);
