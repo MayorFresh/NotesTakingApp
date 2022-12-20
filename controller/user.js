@@ -32,18 +32,21 @@ const signup = async(req, res) => {
             email_token += characters[Math.floor(Math.random() * characters.length )];
         }
 
-        //to save the new user data to the database
-        const user = await User.create({
+        // to store the user details into a variable
+        const user = new User({
             firstname, lastname, email,
             password: encryptedpassword,
             confirmationCode: email_token
         })
 
+        //to save the new user data to the database
+        user.save()
+
         //to send the confrimation mail
-        nodemailer.sendConfirmationEmail(await 
-            User.firstname,
-            User.email,
-            User.confirmationCode
+        nodemailer.sendConfirmationEmail(
+            user.firstname,
+            user.email,
+            user.confirmationCode
         );
 
         //to generate token when the user signs up
