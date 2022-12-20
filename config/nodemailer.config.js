@@ -14,39 +14,38 @@ const transport = nodemailer.createTransport({
     },
 });
 
-
-
-const sendConfirmationEmail = async (req, res) => {
+const sendConfirmationEmail = async (firstname, email, confirmationCode) => {
     try {
-        // const {firstname, email, confirmationCode} = User(req.body)
-        // const email = User.email
-        // const firstname = User.firstname
-        // const confirmationCode = User.confirmationCode
+        // const signup = test
+        // const {firstname, email, confirmationCode} = signup.req.body
+
+        // const email = req.body.users.email
+        // const username = details.firstname
+        const firstname = require('../model/user')
+        // const confirmationCode = details.confirmationCode
+
+        console.log(firstname.users.firstname)
+        console.log(email)
+        console.log(confirmationCode)
         transport.sendMail({
             from: user,
-            to: "dav33d88joh66nn99@gmail.com",
+            to: email,
             subject: "Please confirm your account",
             html: `<h1>Email Confirmation</h1>
-              <h2>Hello ${User.firstname}</h2>
+              <h2>Hello ${firstname}</h2>
               <p>Welcome to NotesTakingApp. Please confirm your email by clicking on the following link</p>
-              <a href=http://localhost:4000/confirm/${User.confirmationCode}> Click here</a>
+              <a href=http://localhost:4000/confirm/${confirmationCode}> Click here</a>
               </div>`
-            })
+        })
+        console.log("email sent")
     }
     catch (e) {
         console.log(e)
     }
 }
 
-// transport.sendMail(sendConfirmationEmail, (e, info) => {
-//     if(e) {
-//         console.log(e)
-//     } else {
-//         console.log("Email sent " + info.response)
-//     }
-// })
-
-
 
 
   module.exports = {sendConfirmationEmail}
+
+  

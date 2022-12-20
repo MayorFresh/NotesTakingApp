@@ -40,10 +40,10 @@ const signup = async(req, res) => {
         })
 
         //to send the confrimation mail
-        nodemailer.sendConfirmationEmail(
-            user.firstname,
-            user.email,
-            user.confirmationCode
+        nodemailer.sendConfirmationEmail(await 
+            User.firstname,
+            User.email,
+            User.confirmationCode
         );
 
         //to generate token when the user signs up
@@ -151,11 +151,40 @@ const getuser = async (req, res) => {
             res.status(200).send({allusers})
             console.log("Successfully Fetched all users")
         }
-    } catch(err) {
+    } catch(e) {
         res.status(500).send("connot fetch all users due to bad request")
-        console.log(err)
+        console.log(e)
     }
 }
 
+//forgot password endpoint
+const forgotpass = async (req, res) => {
+    try {
+        //to get the user's input
+        const {email} = req.body
 
-module.exports = {signup, getuser, signin, verifyUser}
+        //to validate the user's input
+        if (!(email)) {
+            res.status(400).send("All input is required")
+        }
+
+        //to verify if it's a registered email
+        const user = await User.findOne({email})
+        if (!user) {
+            res.status(401).send("invalid email")
+        } else {
+            res.status(200).send("A reset link has been sent to your email")
+        }
+
+
+    }
+    catch (e) {
+        console.log(e)
+    }
+
+
+}
+
+
+
+module.exports = {signup, getuser, signin, verifyUser, forgotpass}
