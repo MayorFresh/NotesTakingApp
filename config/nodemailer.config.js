@@ -13,6 +13,7 @@ const transport = nodemailer.createTransport({
     },
 });
 
+//to send confirmation mail when a user sign up
 const sendConfirmationEmail = async (name, email, confirmationCode) => {
     try {
         transport.sendMail({
@@ -32,8 +33,28 @@ const sendConfirmationEmail = async (name, email, confirmationCode) => {
     }
 }
 
+//to send a reset link when a user forgets password
+const sendResetLink = async (name, email, confirmationCode) => {
+    try {
+        transport.sendMail({
+            from: user,
+            to: email,
+            subject: "Reset Password",
+            html: `<h1>Reset your Password</h1>
+              <h2>Hello ${name}</h2>
+              <p>Reset your password by clicking on the link below</p>
+              <a href=http://localhost:4000/resetpass/> Click here</a>
+              </div>`
+        })
+        console.log("email sent successfully")
+    }
+    catch (e) {
+        console.log(e)
+    }
+}
 
 
-  module.exports = {sendConfirmationEmail}
+
+  module.exports = {sendConfirmationEmail, sendResetLink}
 
   

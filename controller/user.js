@@ -47,7 +47,7 @@ const signup = async(req, res) => {
             user.firstname,
             user.email,
             user.confirmationCode
-        );
+        )
 
         //to generate token when the user signs up
         const token = jwt.sign({user_id: user._id, email},
@@ -72,7 +72,7 @@ const signup = async(req, res) => {
 
 
 //Verify user endpoint
-const verifyUser = async (req, res, next) => {
+const verifyUser = async (req, res) => {
     //accessing the user's confirmation code
     const confirmationCode = req.params.confirmationCode
     try {
@@ -164,6 +164,10 @@ const getuser = async (req, res) => {
 
 //forgot password endpoint
 const forgotpass = async (req, res) => {
+
+    //to set the request parameter
+    req.params.email
+
     try {
         //to get the user's input
         const {email} = req.body
@@ -178,9 +182,14 @@ const forgotpass = async (req, res) => {
         if (!user) {
             res.status(401).send("invalid email")
         } else {
+            //to send the confrimation mail
+            nodemailer.sendResetLink(
+            user.firstname,
+            user.email,
+            user.confirmationCode)
+           
             res.status(200).send("A reset link has been sent to your email")
         }
-
 
     }
     catch (e) {
@@ -190,6 +199,41 @@ const forgotpass = async (req, res) => {
 
 }
 
+//Verify resetlink endpoint
+const resetpass = async (req, res) => {
+    //accessing the user's confirmation code
+    const confirmationCode = req.params.confirmationCode
+
+    const {newpassword, confirmpassword} = req.body
+
+    try {
+       const user = await User.findOne({confirmationCode})
+       if (!user) {
+            res.status(404).send({ message: "User Not found."});
+        }else if (!(newpassword && confirmpassword)) {
+            res.status(400).send("All input is required")
+        } else if (newpassword != confirmpassword) {
+            res.status(400).send("password does not match")
+        } else {
+            const encryptedpass = await bcrypt.hash(newpassword, 10)
+            console.log(encryptedpass)
+            const pass = user.password
+            pass = encryptedpass
+            console.log(pass)
+            user.save()
+            res.status(200).send("Password changed successfully")
+            console.log("changed")
+        }
+        // res.status(200).send("password reset succcessful")
+        // console.log(user.email + " is Active")
+      
+    }
+    catch(e) {
+        console.log("error", e)
+    }
+    
+}
 
 
-module.exports = {signup, getuser, signin, verifyUser, forgotpass}
+
+module.exports = {signup, getuser, signin, verifyUser, forgotpass, resetpass}
