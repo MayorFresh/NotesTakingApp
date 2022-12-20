@@ -81,7 +81,9 @@ const verifyUser = async (req, res, next) => {
         res.status(404).send({ message: "User Not found."});
       }else {
         user.status = "Active"
-        
+        user.save()
+        res.status(200).send("Account Activated")
+        console.log(user.email + " is Active")
       }
       
     }
