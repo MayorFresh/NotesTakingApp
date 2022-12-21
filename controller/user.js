@@ -1,4 +1,5 @@
 const User = require('../model/user')
+const Note = require('../model/note.js')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 require('dotenv').config();
@@ -195,8 +196,6 @@ const forgotpass = async (req, res) => {
     catch (e) {
         console.log(e)
     }
-
-
 }
 
 //Verify resetlink endpoint
@@ -217,8 +216,7 @@ const resetpass = async (req, res) => {
         } else {
             const encryptedpass = await bcrypt.hash(newpassword, 10)
             console.log(encryptedpass)
-            const pass = user.password
-            pass = encryptedpass
+            user.password = encryptedpass
             console.log(pass)
             user.save()
             res.status(200).send("Password changed successfully")
@@ -235,5 +233,54 @@ const resetpass = async (req, res) => {
 }
 
 
+//create new note endpoint
+const newnote = async (req, res) => {
+    try {
+        // accessing all the schema objects
+        const {title, description} = req.body
 
-module.exports = {signup, getuser, signin, verifyUser, forgotpass, resetpass}
+        // validating the user's input
+        if (!(title && description)) {
+            res.status(400).send("All Input Is Required")
+        }
+
+        // to store the user-note details into a variable
+        const note = new Note({title, description})
+
+        //to save the new user data to the database
+        note.save()
+
+        res.status(201).send("Note created successfully")
+
+    } 
+    catch (e) {
+        console.log(e)
+    }
+}
+
+//edit an existing note
+const editnote = async (req, res) => {
+    const _id = req.params.id
+    const noteupdate = Object.keys(req.body)
+    const validUpdates = ['title', 'description']
+    noteupdate.every((update) => validUpdates.includes(update))
+
+    try {
+        //to get the note with ID as query
+        Note.findByIdAndUpdate(_id, req.body, {new: true, runValidators: true})
+
+        
+        .then((note) => {
+            res.status(200).send({message: "Update Successful", note})
+        }).catch((e) => {
+            res.status(400).send({fail: "could not update note"})
+        })
+
+    }
+    catch (e) {
+        console.log(e)
+    }
+}
+
+
+module.exports = {signup, getuser, signin, verifyUser, forgotpass, resetpass, newnote, editnote}
