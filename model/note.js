@@ -1,7 +1,13 @@
 const mongoose = require('mongoose')
+const User = require('./user')
+
 
 
 const noteSchema = new mongoose.Schema({
+    userID: {
+        type: User.ObjectId,
+        ref: 'User'
+    },
     title: {
         type: String
     },

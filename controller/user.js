@@ -201,27 +201,46 @@ const forgotpass = async (req, res) => {
 //Verify resetlink endpoint
 const resetpass = async (req, res) => {
     //accessing the user's confirmation code
-    const confirmationCode = req.params.confirmationCode
+    const _id = req.params.id
 
-    const {newpassword, confirmpassword} = req.body
+    // const password = req.body
+    
+    
 
     try {
-       const user = await User.findOne({confirmationCode})
-       if (!user) {
-            res.status(404).send({ message: "User Not found."});
-        }else if (!(newpassword && confirmpassword)) {
-            res.status(400).send("All input is required")
-        } else if (newpassword != confirmpassword) {
-            res.status(400).send("password does not match")
-        } else {
-            const encryptedpass = await bcrypt.hash(newpassword, 10)
-            console.log(encryptedpass)
-            user.password = encryptedpass
-            console.log(pass)
-            user.save()
-            res.status(200).send("Password changed successfully")
-            console.log("changed")
-        }
+        const passupdate = Object.keys(req.body)
+        const validUpdates = ['password']
+        passupdate.every((update) => validUpdates.includes(update))
+
+        User.findByIdAndUpdate(_id, req.body, {new: true, runValidators: true})
+        .then((user) => {
+            res.status(200).send({message: "Update Successful", user})
+        }).catch((e) => {
+            res.status(400).send({fail: "could not update note"})
+        })
+
+
+
+        //const user = await User.findOne({confirmationCode})
+
+    //    if (!user) {
+    //         res.status(404).send({ message: "User Not found."});
+    //     }else if (!(newpassword && confirmpassword)) {
+    //         res.status(400).send("All input is required")
+    //     } else if (newpassword != confirmpassword) {
+    //         res.status(400).send("password does not match")
+    //     } else {
+    //         const encryptedpass = await bcrypt.hash(newpassword, 10)
+    //         console.log(encryptedpass)
+            // const filter = confirmationCode
+            // const resetpass = user.password
+            // const doct = await User.findOneAndUpdate(filter, resetpass)
+            // user.password = encryptedpass
+            // console.log(resetpass)
+            
+            // res.status(200).send("Password changed successfully")
+            // console.log("changed")
+        // }
         // res.status(200).send("password reset succcessful")
         // console.log(user.email + " is Active")
       
@@ -269,7 +288,7 @@ const editnote = async (req, res) => {
         //to get the note with ID as query
         Note.findByIdAndUpdate(_id, req.body, {new: true, runValidators: true})
 
-        
+
         .then((note) => {
             res.status(200).send({message: "Update Successful", note})
         }).catch((e) => {
