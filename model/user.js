@@ -2,9 +2,9 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 
 const userSchema = new mongoose.Schema({
-    _id: {
-        type: Schema.Types.ObjectId
-    },
+    // _id: {
+    //     type: mongoose.Schema.Types.ObjectId
+    // },
     firstname: {
         type: String,
         trim: true,

@@ -255,16 +255,22 @@ const resetpass = async (req, res) => {
 //create new note endpoint
 const newnote = async (req, res) => {
     try {
+
+
         // accessing all the schema objects
-        const {title, description} = req.body
+        const {user_id, title, description} = req.body
 
         // validating the user's input
         if (!(title && description)) {
             res.status(400).send("All Input Is Required")
         }
 
+        // const _id = req.params.id
+
+        // const userId = await User._id
+
         // to store the user-note details into a variable
-        const note = new Note({title, description})
+        const note = new Note({user_id, title, description})
 
         //to save the new user data to the database
         note.save()
@@ -301,5 +307,41 @@ const editnote = async (req, res) => {
     }
 }
 
+//get all the notes
+const getallnotes = async (req, res) => {
+    try {
+        const allnotes = await Note.find({})
+        if(!allnotes){
+            res.status(404).send({empty: "no note(s) found"})
+        }else if(allnotes == 0){
+            res.status(202).send({Empty: "No note found, database is empty"})
+        }
+        else{
+            res.status(200).send({allnotes})
+            console.log("Successfully Fetched all notes")
+        }
+    } catch(e) {
+        res.status(500).send("connot fetch all notes due to bad request")
+        console.log(e)
+    }
 
-module.exports = {signup, getuser, signin, verifyUser, forgotpass, resetpass, newnote, editnote}
+}
+
+//get a single note
+const getsinglenote = async (req, res) => {
+    const _id = req.params.id
+    try {
+        Note.findById(_id).then((note) => {
+            res.status(200).send({note}) 
+        })
+
+    }
+    catch (e) {
+        console.log(e)
+    }
+}
+
+
+module.exports = {signup, getuser, signin, verifyUser, forgotpass, resetpass, 
+    newnote, editnote, getallnotes, getsinglenote,
+}
