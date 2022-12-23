@@ -200,63 +200,39 @@ const forgotpass = async (req, res) => {
 
 //Verify resetlink endpoint
 const resetpass = async (req, res) => {
-    //accessing the user's confirmation code
-    const _id = req.params.id
+    //accessing the user's id code
+    const {password, confirmpassword} = req.body
 
-    // const password = req.body
-    
-    
+    //to check for the textfield
+    if (!(password && confirmpassword)) {
+        return res.status(400).send("All input is required")
+    } else if (password != confirmpassword) {
+       return res.status(400).send("password does not match")
+    } 
 
     try {
-        const passupdate = Object.keys(req.body)
-        const validUpdates = ['password']
-        passupdate.every((update) => validUpdates.includes(update))
+        let user = await User.findOne({_id: req.params.id})
 
-        User.findByIdAndUpdate(_id, req.body, {new: true, runValidators: true})
+        const newpass = await bcrypt.hash(password, 10)
+        user.password = newpass
+
+        await user.save()
         .then((user) => {
             res.status(200).send({message: "Update Successful", user})
         }).catch((e) => {
             res.status(400).send({fail: "could not update note"})
         })
-
-
-
-        //const user = await User.findOne({confirmationCode})
-
-    //    if (!user) {
-    //         res.status(404).send({ message: "User Not found."});
-    //     }else if (!(newpassword && confirmpassword)) {
-    //         res.status(400).send("All input is required")
-    //     } else if (newpassword != confirmpassword) {
-    //         res.status(400).send("password does not match")
-    //     } else {
-    //         const encryptedpass = await bcrypt.hash(newpassword, 10)
-    //         console.log(encryptedpass)
-            // const filter = confirmationCode
-            // const resetpass = user.password
-            // const doct = await User.findOneAndUpdate(filter, resetpass)
-            // user.password = encryptedpass
-            // console.log(resetpass)
-            
-            // res.status(200).send("Password changed successfully")
-            // console.log("changed")
-        // }
-        // res.status(200).send("password reset succcessful")
-        // console.log(user.email + " is Active")
       
     }
     catch(e) {
         console.log("error", e)
-    }
-    
+    }  
 }
 
 
 //create new note endpoint
 const newnote = async (req, res) => {
     try {
-
-
         // accessing all the schema objects
         const {user_id, title, description} = req.body
 
@@ -264,10 +240,6 @@ const newnote = async (req, res) => {
         if (!(title && description)) {
             res.status(400).send("All Input Is Required")
         }
-
-        // const _id = req.params.id
-
-        // const userId = await User._id
 
         // to store the user-note details into a variable
         const note = new Note({user_id, title, description})
@@ -310,7 +282,7 @@ const editnote = async (req, res) => {
 //get all the notes
 const getallnotes = async (req, res) => {
     try {
-        const allnotes = await Note.find({})
+        const allnotes = await Note.findById({})
         if(!allnotes){
             res.status(404).send({empty: "no note(s) found"})
         }else if(allnotes == 0){
