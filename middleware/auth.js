@@ -11,17 +11,19 @@ const appendUser = async (req, res, next) => {
 
     try {
         decoded = jwt.verify(token, process.env.TOKEN_KEY)
+ 
+        const userId = decoded.user_id
 
-        // req.user = await User.findOne({_id: decoded.id})
+        const user = await User.findOne({_id: userId})
+        req.user = user
 
         next();
     }
     catch(e){
+        console.log(e)
         return res.status(401).send('unauthorized');
+        
     }
-
-    var userId = decoded.id
-    var user = await User.findOne({_id: userId})
 
 }
 

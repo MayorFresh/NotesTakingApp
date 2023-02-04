@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 require('dotenv').config();
 const nodemailer = require('../config/nodemailer.config')
-const appenUser = require('../middleware/auth')
+// const appenUser = require('../middleware/auth')
 
 //Register Endpoint
 const signUp = async(req, res) => {
@@ -234,7 +234,7 @@ const resetPass = async (req, res) => {
 //create new note endpoint
 const newNote = async (req, res) => {
     try {
-        const user_id = req.appenUser
+        const user_id = req.user.email
         // accessing all the schema objects
         const { title, description} = req.body
 
