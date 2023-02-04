@@ -4,9 +4,10 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 require('dotenv').config();
 const nodemailer = require('../config/nodemailer.config')
+const appenUser = require('../middleware/auth')
 
 //Register Endpoint
-const signup = async(req, res) => {
+const signUp = async(req, res) => {
     try {
         // accessing all the schema objects
         const {firstname, lastname, email, password} = req.body
@@ -53,7 +54,7 @@ const signup = async(req, res) => {
         //to generate token when the user signs up
         const token = jwt.sign({user_id: user._id, email},
             process.env.TOKEN_KEY,
-            {expiresIn: "7200"} //expires in 2 hours
+            //{expiresIn: "7200"} //expires in 2 hours
         )
 
         //to add the token the user data at signup
@@ -95,7 +96,7 @@ const verifyUser = async (req, res) => {
 }
 
 //signin endpoint
-const signin = async (req, res) => {
+const signIn = async (req, res) => {
     try {
         //to get the user's login info
         const {email, password} = req.body
@@ -118,7 +119,7 @@ const signin = async (req, res) => {
             //create login token
             const token = jwt.sign({user_id: user._id, email}, 
                 process.env.TOKEN_KEY,
-                {expiresIn: "7200"} //expires in 2 hours
+                //{expiresIn: "7200"} //expires in 2 hours
             )
 
             //to save the token 
@@ -145,7 +146,7 @@ const signin = async (req, res) => {
 }
 
 //get all users
-const getuser = async (req, res) => {
+const getUser = async (req, res) => {
     try {
         const allusers = await User.find({})
         if(!allusers){
@@ -164,7 +165,7 @@ const getuser = async (req, res) => {
 }
 
 //forgot password endpoint
-const forgotpass = async (req, res) => {
+const forgotPass = async (req, res) => {
 
     //to set the request parameter
     req.params.email
@@ -199,7 +200,7 @@ const forgotpass = async (req, res) => {
 }
 
 //Verify resetlink endpoint
-const resetpass = async (req, res) => {
+const resetPass = async (req, res) => {
     //accessing the user's id code
     const {password, confirmpassword} = req.body
 
@@ -231,10 +232,11 @@ const resetpass = async (req, res) => {
 
 
 //create new note endpoint
-const newnote = async (req, res) => {
+const newNote = async (req, res) => {
     try {
+        const user_id = req.appenUser
         // accessing all the schema objects
-        const {user_id, title, description} = req.body
+        const { title, description} = req.body
 
         // validating the user's input
         if (!(title && description)) {
@@ -247,7 +249,8 @@ const newnote = async (req, res) => {
         //to save the new user data to the database
         note.save()
 
-        res.status(201).send("Note created successfully")
+        // res.status(201).send("Note created successfully")
+        res.status(201).json({note})
 
     } 
     catch (e) {
@@ -256,11 +259,11 @@ const newnote = async (req, res) => {
 }
 
 //edit an existing note
-const editnote = async (req, res) => {
+const editNote = async (req, res) => {
     const _id = req.params.id
-    const noteupdate = Object.keys(req.body)
+    const noteUpdate = Object.keys(req.body)
     const validUpdates = ['title', 'description']
-    noteupdate.every((update) => validUpdates.includes(update))
+    noteUpdate.every((update) => validUpdates.includes(update))
 
     try {
         //to get the note with ID as query
@@ -280,16 +283,22 @@ const editnote = async (req, res) => {
 }
 
 //get all the notes
-const getallnotes = async (req, res) => {
+const getAllNotes = async (req, res) => {
     try {
-        const allnotes = await Note.findById({})
-        if(!allnotes){
+        // here
+        const decoded = jwt.verify(req.token, process.env.TOKEN_KEY)
+
+        req.user = await Auth.findById(decoded.id)
+        req.userdata = await User.findOne({auth: decoded.id})
+
+        const allNotes = await Note.find({})
+        if(!allNotes){
             res.status(404).send({empty: "no note(s) found"})
-        }else if(allnotes == 0){
+        }else if(allNotes == 0){
             res.status(202).send({Empty: "No note found, database is empty"})
         }
         else{
-            res.status(200).send({allnotes})
+            res.status(200).send({allNotes})
             console.log("Successfully Fetched all notes")
         }
     } catch(e) {
@@ -300,7 +309,7 @@ const getallnotes = async (req, res) => {
 }
 
 //get a single note
-const getsinglenote = async (req, res) => {
+const getSingleNote = async (req, res) => {
     const _id = req.params.id
     try {
         Note.findById(_id).then((note) => {
@@ -314,6 +323,6 @@ const getsinglenote = async (req, res) => {
 }
 
 
-module.exports = {signup, getuser, signin, verifyUser, forgotpass, resetpass, 
-    newnote, editnote, getallnotes, getsinglenote,
+module.exports = {signUp, getUser, signIn, verifyUser, forgotPass, resetPass, 
+    newNote, editNote, getAllNotes, getSingleNote,
 }

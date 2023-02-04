@@ -5,8 +5,7 @@ const User = require('./user')
 
 const noteSchema = new mongoose.Schema({
     user_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        type: String
     },
     title: {
         type: String

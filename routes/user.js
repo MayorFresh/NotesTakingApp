@@ -2,23 +2,23 @@ const express = require('express')
 const router = express.Router();
 
 // importing the controllers 
-const {signup, getuser, signin, verifyUser, forgotpass, resetpass, 
-    newnote, editnote
+const {signUp, getUser, signIn, verifyUser, forgotPass, resetPass, 
+    newNote, editNote, getAllNotes, getSingleNote
 } = require('../controller/user')
 
 //asigning endpoints
-router.route('/').post(signup).get(getuser)
-router.route('/signin').post(signin)
+router.route('/').post(signUp).get(getUser)
+router.route('/signin').post(signIn)
 //for email confirmation
 router.route('/confirm/:confirmationCode').get(verifyUser)
 //for forgot passwprd
-router.route('/forgotpass').post(forgotpass)
+router.route('/forgotpass').post(forgotPass)
 //for reseting the password
-router.route('/resetpass').post(resetpass)
+router.route('/resetpass').post(resetPass)
 //for creating new note
-router.route('/newnote').post(newnote)
+router.route('/newnote').post(newNote)
 //for editing a note
-router.route('/editnote/:id').patch(editnote)
-
+router.route('/editnote/:id').patch(editNote)
+router.route('/getallnotes').get(getAllNotes)
 
 module.exports = router
