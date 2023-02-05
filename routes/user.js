@@ -18,7 +18,7 @@ router.route('/resetpass').post(resetPass)
 //for creating new note
 router.route('/newnote').post(auth, newNote)
 //for editing a note
-router.route('/editnote/:id').patch(editNote)
+router.route('/editnote/:id').patch(auth, editNote)
 router.route('/getallnotes').get(auth, getAllNotes)
 
 module.exports = router

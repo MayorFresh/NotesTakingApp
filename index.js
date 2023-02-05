@@ -9,7 +9,6 @@ require('./db/database')
 
 //built-in middleware to parse requests
 app.use(express.json())
-// app.use(middleware)
 
 // default api 
 app.use('/api/v1/notesapp', user);

@@ -267,6 +267,8 @@ const editNote = async (req, res) => {
     noteUpdate.every((update) => validUpdates.includes(update))
 
     try {
+        const user_email = req.user.email
+        await Note.find({user_email})
         //to get the note with ID as query
         Note.findByIdAndUpdate(_id, req.body, {new: true, runValidators: true})
 
