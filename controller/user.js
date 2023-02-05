@@ -14,14 +14,14 @@ const signUp = async(req, res) => {
 
         // validating the user's input
         if (!(firstname && lastname && email && password)) {
-            res.status(400).send("All Input Is Required")
+           return res.status(400).send("All Input Is Required")
         }
 
         //to check if the user is already registered
         const registeredUser = await User.findOne({email})
 
         if (registeredUser) {
-            res.status(409).send("User already exists. Please Login")
+            return res.status(409).send("User already exists. Please Login")
         }
 
         //to encrypt the user's password
