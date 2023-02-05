@@ -14,7 +14,7 @@ router.route('/confirm/:confirmationCode').get(verifyUser)
 //for forgot password
 router.route('/forgotpass').post(forgotPass)
 //for reseting the password
-router.route('/resetpass').post(resetPass)
+router.route('/resetpass/:id').post(resetPass)
 //for creating new note
 router.route('/newnote').post(auth, newNote)
 //for editing a note

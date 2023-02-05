@@ -203,28 +203,22 @@ const forgotPass = async (req, res) => {
 const resetPass = async (req, res) => {
     //accessing the user's id code
     const {password, confirmpassword} = req.body
-
+    const user = await User.findOne({_id: req.params.id})
     //to check for the textfield
-    if (!(password && confirmpassword)) {
+    if (!(password && confirmpassword)) 
+    {
         return res.status(400).send("All input is required")
-    } else if (password != confirmpassword) {
+    } else if (password != confirmpassword) 
+    {
        return res.status(400).send("password does not match")
     } 
-
-    try {
-        let user = await User.findOne({_id: req.params.id})
-
-        const newpass = bcrypt.hash(password, 10)
-        console.log(newpass)
-        user.password = newpass
-
-        await user.save()
-        .then((user) => {
+    
+    try {        
+        await bcrypt.hash(password, 10, function(err, hash) {
+            user.password = hash
+            user.save()
             res.status(200).send({message: "Update Successful", user})
-        }).catch((e) => {
-            res.status(400).send({fail: "could not update note"})
-        })
-      
+        })      
     }
     catch(e) {
         console.log("error", e)
