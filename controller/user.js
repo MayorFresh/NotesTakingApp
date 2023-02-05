@@ -182,7 +182,7 @@ const forgotPass = async (req, res) => {
         //to verify if it's a registered email
         const user = await User.findOne({email})
         if (!user) {
-            res.status(401).send("invalid email")
+            res.status(401).send("no registered account found")
         } else {
             //to send the confrimation mail
             nodemailer.sendResetLink(
@@ -214,7 +214,8 @@ const resetPass = async (req, res) => {
     try {
         let user = await User.findOne({_id: req.params.id})
 
-        const newpass = await bcrypt.hash(password, 10)
+        const newpass = bcrypt.hash(password, 10)
+        console.log(newpass)
         user.password = newpass
 
         await user.save()
@@ -322,7 +323,19 @@ const getSingleNote = async (req, res) => {
     }
 }
 
+const deleteNote = async (req, res) => {
+    try {
+        const user_email = req.user.email
+        await Note.find({user_email})
+        await Note.findByIdAndDelete({_id: req.params.id})
+        res.status(200).send("deleted")
+    } 
+    catch (e) {
+        console.log(e)
+    }
+}
+
 
 module.exports = {signUp, getUser, signIn, verifyUser, forgotPass, resetPass, 
-    newNote, editNote, getAllNotes, getSingleNote,
+    newNote, editNote, getAllNotes, getSingleNote, deleteNote
 }
