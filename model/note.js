@@ -4,7 +4,7 @@ const User = require('./user')
 
 
 const noteSchema = new mongoose.Schema({
-    user_id: {
+    user_email: {
         type: String
     },
     title: {

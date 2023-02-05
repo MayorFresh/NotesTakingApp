@@ -234,7 +234,8 @@ const resetPass = async (req, res) => {
 //create new note endpoint
 const newNote = async (req, res) => {
     try {
-        const user_id = req.user.email
+        // getting the logged in user email in order to create a new note
+        const user_email = req.user.email
         // accessing all the schema objects
         const { title, description} = req.body
 
@@ -244,7 +245,7 @@ const newNote = async (req, res) => {
         }
 
         // to store the user-note details into a variable
-        const note = new Note({user_id, title, description})
+        const note = new Note({user_email, title, description})
 
         //to save the new user data to the database
         note.save()
@@ -285,13 +286,10 @@ const editNote = async (req, res) => {
 //get all the notes
 const getAllNotes = async (req, res) => {
     try {
-        // here
-        const decoded = jwt.verify(req.token, process.env.TOKEN_KEY)
 
-        req.user = await Auth.findById(decoded.id)
-        req.userdata = await User.findOne({auth: decoded.id})
+        const user_email = req.user.email
 
-        const allNotes = await Note.find({})
+        const allNotes = await Note.find({user_email})
         if(!allNotes){
             res.status(404).send({empty: "no note(s) found"})
         }else if(allNotes == 0){
