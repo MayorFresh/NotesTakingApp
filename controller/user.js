@@ -155,7 +155,7 @@ const getUser = async (req, res) => {
             res.status(202).send({Empty: "No user found, database is empty"})
         }
         else{
-            res.status(200).send({allusers})
+            res.status(200).send({allusers, nbHits: allusers.length})
             console.log("Successfully Fetched all users")
         }
     } catch(e) {
@@ -245,7 +245,6 @@ const newNote = async (req, res) => {
         //to save the new user data to the database
         note.save()
 
-        // res.status(201).send("Note created successfully")
         res.status(201).json({note})
 
     } 
@@ -293,7 +292,7 @@ const getAllNotes = async (req, res) => {
             res.status(202).send({Empty: "No note found, database is empty"})
         }
         else{
-            res.status(200).send({allNotes})
+            res.status(200).send({allNotes, nbHits: allNotes.length})
             console.log("Successfully Fetched all notes")
         }
     } catch(e) {

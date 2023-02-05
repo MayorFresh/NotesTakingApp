@@ -1,9 +1,11 @@
 const express = require('express')
 const router = express.Router();
 const auth = require('../middleware/auth')
+
+
 // importing the controllers 
 const {signUp, getUser, signIn, verifyUser, forgotPass, resetPass, 
-    newNote, editNote, getAllNotes, getSingleNote, deleteNote
+    newNote, editNote, getAllNotes, deleteNote
 } = require('../controller/user')
 
 //asigning endpoints
