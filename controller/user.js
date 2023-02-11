@@ -286,6 +286,7 @@ const getAllNotes = async (req, res) => {
         const user_email = req.user.email
 
         const allNotes = await Note.find({user_email})
+        
         if(!allNotes){
             res.status(404).send({empty: "no note(s) found"})
         }else if(allNotes == 0){

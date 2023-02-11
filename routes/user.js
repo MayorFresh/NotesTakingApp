@@ -9,7 +9,24 @@ const {signUp, getUser, signIn, verifyUser, forgotPass, resetPass,
 } = require('../controller/user')
 
 //asigning endpoints
-router.route('/').post(signUp).get(getUser)
+router.route('/signup').post(signUp)
+
+//To get all the users that has created an account
+
+/**
+* @swagger
+* /api/v1/notesapp/getAllUsers:
+*   get:
+*     tags:
+*       - user
+*     summary: get all users
+*     description: this endpoint uses get request to retrieve all users
+*     responses:
+*       200:
+*         description: success
+*/
+
+router.route('/getAllUsers').get(getUser)
 router.route('/signin').post(signIn)
 //for email confirmation
 router.route('/confirm/:confirmationCode').get(verifyUser)
