@@ -8,7 +8,51 @@ const {signUp, getUser, signIn, verifyUser, forgotPass, resetPass,
     newNote, editNote, getAllNotes, deleteNote
 } = require('../controller/user')
 
-//asigning endpoints
+
+//To get all the users that has created an account
+
+/**
+* @swagger
+* /api/v1/notesapp/signup:
+*   post:
+*     tags:
+*       - user
+*     summary: Create a new user
+*     description: this endpoint is to create a new user
+*     parameters:
+*       - in: body
+*         name: User
+*         description: firstname
+*         schema: 
+*           type: object
+*           required: 
+*             - firstname
+*             - lastname
+*             - email
+*             - password
+*           properties:
+*             firstname: 
+*               type: string
+*               example: John
+*             lastname: 
+*               type: string
+*               example: Doe
+*             email: 
+*               type: string
+*               example: johndoe@email.com
+*             password: 
+*               type: string
+*               example: 12345678
+*     responses:
+*       201:
+*         description: created successfully
+*       403:
+*         description: unauthorised
+*       500:
+*         description: any other error
+*/
+
+
 router.route('/signup').post(signUp)
 
 //To get all the users that has created an account
