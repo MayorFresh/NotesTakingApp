@@ -9,7 +9,7 @@ const {signUp, getUser, signIn, verifyUser, forgotPass, resetPass,
 } = require('../controller/user')
 
 
-//To get all the users that has created an account
+//To create a new account
 
 /**
 * @swagger
@@ -67,10 +67,57 @@ router.route('/signup').post(signUp)
 *     description: this endpoint uses get request to retrieve all users
 *     responses:
 *       200:
-*         description: success
+*         description: Ok. successful
+*       404:
+*         description: Not found. No user(s) found.
+*       500:
+*         description: Server Error
 */
 
 router.route('/getAllUsers').get(getUser)
+
+//User signin route
+
+/**
+* @swagger
+* /api/v1/notesapp//signin:
+*   post:
+*     tags:
+*       - user
+*     summary: User signin
+*     description: A user should sign in with the right details
+*     parameters:
+*       - in: body
+*         name: User
+*         description: firstname
+*         schema: 
+*           type: object
+*           required: 
+*             - email
+*             - password
+*           properties:
+*             email: 
+*               type: string
+*               example: johndoe@email.com
+*             password: 
+*               type: string
+*               example: 12345678
+*     responses:
+*       201:
+*         description: login successful
+*       400:
+*         description: All input is required
+*       401:
+*         description: Unauthorized
+*       403:
+*         description: Forbidden. Pending Account. Please Verify Your Email!
+*       404:
+*         description: Not found. Invalid email
+*       500:
+*         description: Server Error
+*/
+
+
 router.route('/signin').post(signIn)
 //for email confirmation
 router.route('/confirm/:confirmationCode').get(verifyUser)

@@ -109,7 +109,7 @@ const signIn = async (req, res) => {
         //to check the user's details in the database
         const user = await User.findOne({email})
         if (!user) {
-            res.status(401).send("invalid email")
+            res.status(404).send("invalid email")
         } 
 
         //decrypting the user's password
@@ -127,16 +127,16 @@ const signIn = async (req, res) => {
 
             //to check if the user's accout has been activated
             if (user.status != "Active") {
-                return res.status(401).send({
+                return res.status(403).send({
                   message: "Pending Account. Please Verify Your Email!"}) 
             } else {
                 //to display the info of the logged in user
-                res.status(200).json(user)
+                res.status(201).json(user)
                 console.log(user.email + " login successful")
             }
 
         } else {
-            res.status(400).send("Incorrect password")
+            res.status(401).send("Incorrect password")
         }
 
     }
