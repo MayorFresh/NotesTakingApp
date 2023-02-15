@@ -18,10 +18,12 @@ const option = {
         ],
         tags: [
             {
-                name: "notes",
-                description: "Operations about user",
                 name: "user",
-                description: "Creating notes associated with each user", 
+                description: "Operations about user", 
+            },
+            {
+                name: "notes",
+                description: "Creating notes associated with each user",
             }
         ],
     },

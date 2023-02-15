@@ -22,7 +22,7 @@ const {signUp, getUser, signIn, verifyUser, forgotPass, resetPass,
 *     parameters:
 *       - in: body
 *         name: User
-*         description: firstname
+*         description: User details
 *         schema: 
 *           type: object
 *           required: 
@@ -45,13 +45,14 @@ const {signUp, getUser, signIn, verifyUser, forgotPass, resetPass,
 *               example: 12345678
 *     responses:
 *       201:
-*         description: created successfully
-*       403:
-*         description: unauthorised
+*         description: User created
+*       400:
+*         description: All input is required
+*       409:
+*         description: User already exists
 *       500:
-*         description: any other error
+*         description: Server Error
 */
-
 
 router.route('/signup').post(signUp)
 
@@ -59,7 +60,7 @@ router.route('/signup').post(signUp)
 
 /**
 * @swagger
-* /api/v1/notesapp/getAllUsers:
+* /api/v1/notesapp/getallusers:
 *   get:
 *     tags:
 *       - user
@@ -74,9 +75,9 @@ router.route('/signup').post(signUp)
 *         description: Server Error
 */
 
-router.route('/getAllUsers').get(getUser)
+router.route('/getallusers').get(getUser)
 
-//User signin route
+//User signin route 
 
 /**
 * @swagger
@@ -89,7 +90,7 @@ router.route('/getAllUsers').get(getUser)
 *     parameters:
 *       - in: body
 *         name: User
-*         description: firstname
+*         description: User sigin details
 *         schema: 
 *           type: object
 *           required: 
@@ -117,8 +118,8 @@ router.route('/getAllUsers').get(getUser)
 *         description: Server Error
 */
 
-
 router.route('/signin').post(signIn)
+
 //for email confirmation
 router.route('/confirm/:confirmationCode').get(verifyUser)
 //for forgot password
@@ -126,10 +127,61 @@ router.route('/forgotpass').post(forgotPass)
 //for reseting the password
 router.route('/resetpass/:id').post(resetPass)
 //for creating new note
+
+/**
+* @swagger
+* /api/v1/notesapp/newnote:
+*   post:
+*     tags:
+*       - notes
+*     summary: Create a new note
+*     description: this endpoint is to create a new note
+*     parameters:
+*       - in: body
+*         name: Notes
+*         description: New note details
+*         schema: 
+*           type: object
+*           properties:
+*             title: 
+*               type: string
+*               example: My Todo
+*             description: 
+*               type: string
+*               example: Things i want to do
+*     responses:
+*       201:
+*         description: User created
+*       400:
+*         description: All input is required
+*       409:
+*         description: User already exists
+*       500:
+*         description: Server Error
+*/
+
 router.route('/newnote').post(auth, newNote)
 //for editing a note
 router.route('/editnote/:id').patch(auth, editNote)
 //to get all notes created by a user
+
+/**
+* @swagger
+* /api/v1/notesapp/getallnotes:
+*   get:
+*     tags:
+*       - notes
+*     summary: get all notes
+*     description: this endpoint uses get request to retrieve all notes created by a user
+*     responses:
+*       200:
+*         description: Ok. successful
+*       404:
+*         description: Not found. No user(s) found.
+*       500:
+*         description: Server Error
+*/
+
 router.route('/getallnotes').get(auth, getAllNotes)
 //to delete a single note created by a user
 router.route('/deletenote/:id').delete(auth, deleteNote)
