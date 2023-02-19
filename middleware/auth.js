@@ -2,6 +2,22 @@ require('dotenv').config();
 const User = require('../model/user')
 const jwt = require('jsonwebtoken')
 
+const addTokenToHeader = async (req, res, next) => {
+    // Get the token from the request object, assuming it was stored in the `token` property
+    const token = await req.token;
+    console.log(token)
+    
+    // If a token exists, add it to the Authorization header
+    if (token) {
+      req.headers.Authorization = `Bearer ${token}`;
+    }
+    
+    // Call the next middleware function in the chain
+    next();
+}
+  
+
+
 const appendUser = async (req, res, next) => {
     let token;
     if ( req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
@@ -28,4 +44,4 @@ const appendUser = async (req, res, next) => {
 }
 
 
-module.exports = appendUser
+module.exports = {appendUser, addTokenToHeader}

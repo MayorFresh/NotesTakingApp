@@ -25,7 +25,18 @@ const option = {
                 name: "notes",
                 description: "Creating notes associated with each user",
             }
-        ],
+        ],  
+    },
+    swaggerOptions: {
+        securityDefinitions: {
+            Bearer: {
+                type: 'apiKey',
+                name: 'Authorization',
+                in: 'header',
+            },
+        },
+        security: [{ Bearer: [] }],
+        preauthorizeBearer: (token) => `Bearer ${token}`,
     },
     apis: ["./routes/user.js"]
 }

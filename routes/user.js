@@ -118,7 +118,7 @@ router.route('/getallusers').get(getUser)
 *         description: Server Error
 */
 
-router.route('/signin').post(signIn)
+router.route('/signin').post(auth.addTokenToHeader, signIn)
 
 //for email confirmation
 router.route('/confirm/:confirmationCode').get(verifyUser)
@@ -149,6 +149,8 @@ router.route('/resetpass/:id').post(resetPass)
 *             description: 
 *               type: string
 *               example: Things i want to do
+*     security: 
+*       - bearerAuth: []
 *     responses:
 *       201:
 *         description: User created
@@ -160,9 +162,49 @@ router.route('/resetpass/:id').post(resetPass)
 *         description: Server Error
 */
 
-router.route('/newnote').post(auth, newNote)
+router.route('/newnote').post(auth.appendUser, newNote)
+
+
 //for editing a note
-router.route('/editnote/:id').patch(auth, editNote)
+
+/**
+* @swagger
+* /api/v1/notesapp/editnote/{id}:
+*   patch:
+*     tags:
+*       - notes
+*     summary: Edit a note
+*     description: this endpoint is to edit a note
+*     parameters:
+*       - in: path
+*         name: id
+*         description: id of the note to be edited
+*         type: string
+*         required: true
+*       - in: body
+*         name: Notes
+*         description: Edit note details
+*         schema: 
+*           type: object
+*           properties:
+*             title: 
+*               type: string
+*               example: My Todo
+*             description: 
+*               type: string
+*               example: Things i want to do
+*     responses:
+*       200:
+*         description: Note Edited Successfully
+*       400:
+*         description: All input is required
+*       500:
+*         description: Server Error
+*/
+
+router.route('/editnote/:id').patch(auth.appendUser, editNote)
+
+
 //to get all notes created by a user
 
 /**
@@ -173,6 +215,8 @@ router.route('/editnote/:id').patch(auth, editNote)
 *       - notes
 *     summary: get all notes
 *     description: this endpoint uses get request to retrieve all notes created by a user
+*     security: 
+*       - bearerAuth: []
 *     responses:
 *       200:
 *         description: Ok. successful
@@ -182,9 +226,34 @@ router.route('/editnote/:id').patch(auth, editNote)
 *         description: Server Error
 */
 
-router.route('/getallnotes').get(auth, getAllNotes)
+router.route('/getallnotes').get(auth.appendUser, getAllNotes)
+
 //to delete a single note created by a user
-router.route('/deletenote/:id').delete(auth, deleteNote)
+
+/**
+* @swagger
+* /api/v1/notesapp/deletenote/{id}:
+*   delete:
+*     tags:
+*       - notes
+*     summary: Delete a note
+*     description: this endpoint is to delete a note
+*     parameters:
+*       - in: path
+*         name: id
+*         description: id of the note to be deleted
+*         type: string
+*         required: true
+*     responses:
+*       200:
+*         description: Note Edited Successfully
+*       400:
+*         description: All input is required
+*       500:
+*         description: Server Error
+*/
+
+router.route('/deletenote/:id').delete(auth.appendUser, deleteNote)
 
 
 module.exports = router
