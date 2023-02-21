@@ -99,7 +99,7 @@ router.route('/getallusers').get(getUser)
 *           properties:
 *             email: 
 *               type: string
-*               example: johndoe@email.com
+*               example: johndoe@gmail.com
 *             password: 
 *               type: string
 *               example: 12345678
@@ -118,7 +118,7 @@ router.route('/getallusers').get(getUser)
 *         description: Server Error
 */
 
-router.route('/signin').post(auth.addTokenToHeader, signIn)
+router.route('/signin').post(signIn)
 
 //for email confirmation
 router.route('/confirm/:confirmationCode').get(verifyUser)
@@ -126,6 +126,7 @@ router.route('/confirm/:confirmationCode').get(verifyUser)
 router.route('/forgotpass').post(forgotPass)
 //for reseting the password
 router.route('/resetpass/:id').post(resetPass)
+
 //for creating new note
 
 /**
@@ -162,7 +163,7 @@ router.route('/resetpass/:id').post(resetPass)
 *         description: Server Error
 */
 
-router.route('/newnote').post(auth.appendUser, newNote)
+router.route('/newnote').post(auth, newNote)
 
 
 //for editing a note
@@ -193,6 +194,8 @@ router.route('/newnote').post(auth.appendUser, newNote)
 *             description: 
 *               type: string
 *               example: Things i want to do
+*     security: 
+*       - bearerAuth: []
 *     responses:
 *       200:
 *         description: Note Edited Successfully
@@ -202,7 +205,7 @@ router.route('/newnote').post(auth.appendUser, newNote)
 *         description: Server Error
 */
 
-router.route('/editnote/:id').patch(auth.appendUser, editNote)
+router.route('/editnote/:id').patch(auth, editNote)
 
 
 //to get all notes created by a user
@@ -226,7 +229,7 @@ router.route('/editnote/:id').patch(auth.appendUser, editNote)
 *         description: Server Error
 */
 
-router.route('/getallnotes').get(auth.appendUser, getAllNotes)
+router.route('/getallnotes').get(auth, getAllNotes)
 
 //to delete a single note created by a user
 
@@ -244,6 +247,8 @@ router.route('/getallnotes').get(auth.appendUser, getAllNotes)
 *         description: id of the note to be deleted
 *         type: string
 *         required: true
+*     security: 
+*       - bearerAuth: []
 *     responses:
 *       200:
 *         description: Note Edited Successfully
@@ -253,7 +258,7 @@ router.route('/getallnotes').get(auth.appendUser, getAllNotes)
 *         description: Server Error
 */
 
-router.route('/deletenote/:id').delete(auth.appendUser, deleteNote)
+router.route('/deletenote/:id').delete(auth, deleteNote)
 
 
 module.exports = router
