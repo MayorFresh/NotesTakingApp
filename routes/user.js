@@ -81,7 +81,7 @@ router.route('/getallusers').get(getUser)
 
 /**
 * @swagger
-* /api/v1/notesapp//signin:
+* /api/v1/notesapp/signin:
 *   post:
 *     tags:
 *       - user
@@ -121,10 +121,109 @@ router.route('/getallusers').get(getUser)
 router.route('/signin').post(signIn)
 
 //for email confirmation
+
+/**
+* @swagger
+* /api/v1/notesapp/confirm/{confirmationCode}:
+*   get:
+*     tags:
+*       - user
+*     summary: Verify a new user
+*     description: to verify a new user with the confirmation code sent to the user's mail
+*     parameters:
+*       - in: path
+*         name: confirmationCode
+*         description: User's confirmation code
+*         type: string
+*         required: true
+*     responses:
+*       200:
+*         description: Account Activated
+*       404:
+*         description: Not found. Invalid email
+*       500:
+*         description: Server Error
+*/
+
 router.route('/confirm/:confirmationCode').get(verifyUser)
+
 //for forgot password
+
+/**
+* @swagger
+* /api/v1/notesapp/forgotpass:
+*   post:
+*     tags:
+*       - user
+*     summary: Forget Password 
+*     description: It sends a reset password link to the user's email inputed
+*     parameters:
+*       - in: body
+*         name: email
+*         description: User's registered email
+*         schema: 
+*           type: object
+*           required: 
+*             - email
+*           properties:
+*             email: 
+*               type: string
+*               example: johndoe@gmail.com
+*     responses:
+*       200:
+*         description: Success. Reset Password Link sent
+*       400:
+*         description: All input is required
+*       404:
+*         description: Not found. Invalid email
+*       500:
+*         description: Server Error
+*/
+
 router.route('/forgotpass').post(forgotPass)
+
 //for reseting the password
+
+/**
+* @swagger
+* /api/v1/notesapp/resetpass/{id}:
+*   post:
+*     tags:
+*       - user
+*     summary: Reset password
+*     description: to change the user's password to a new one that is being provided.
+*     parameters:
+*       - in: path
+*         name: id
+*         description: User's reset password id
+*         type: string
+*         required: true
+*       - in: body
+*         name: Password Reset
+*         description: A user's new password details
+*         schema: 
+*           type: object
+*           required: 
+*             - password
+*             - confirmpassword
+*           properties:
+*             password: 
+*               type: string
+*               example: password
+*             confirmpassword: 
+*               type: string
+*               example: confirmpassword
+*     responses:
+*       200:
+*         description: Success. Password Changed
+*       400:
+*         description: All input is required
+*       404:
+*         description: password does not match
+*       500:
+*         description: Server Error
+*/
+
 router.route('/resetpass/:id').post(resetPass)
 
 //for creating new note

@@ -80,7 +80,7 @@ const verifyUser = async (req, res) => {
     try {
        const user = await User.findOne({confirmationCode})
        if (!user) {
-        res.status(404).send({ message: "User Not found."});
+       return res.status(404).send({ message: "User Not found."});
       }else {
         user.status = "Active"
         user.save()
@@ -176,13 +176,13 @@ const forgotPass = async (req, res) => {
 
         //to validate the user's input
         if (!(email)) {
-            res.status(400).send("All input is required")
+            return res.status(400).send("All input is required")
         }
 
         //to verify if it's a registered email
         const user = await User.findOne({email})
         if (!user) {
-            res.status(401).send("no registered account found")
+           return res.status(404).send("no registered account found")
         } else {
             //to send the confrimation mail
             nodemailer.sendResetLink(
@@ -210,7 +210,7 @@ const resetPass = async (req, res) => {
         return res.status(400).send("All input is required")
     } else if (password != confirmpassword) 
     {
-       return res.status(400).send("password does not match")
+       return res.status(404).send("password does not match")
     } 
     
     try {        
