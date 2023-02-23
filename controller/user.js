@@ -4,7 +4,6 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 require('dotenv').config();
 const nodemailer = require('../config/nodemailer.config')
-// const appenUser = require('../middleware/auth')
 
 //Register Endpoint
 const signUp = async(req, res) => {
