@@ -5,18 +5,12 @@ require('dotenv').config()
 
 const db_URL = process.env.MONGO_URI
 
-
-mongoose.connect(db_URL, {
-    useNewURLParser: true, useUnifiedTopology: true,
-}, (error, connect) => {
-    if(error){
-        console.log(`Could not connect to the database`)
-        console.log(error)
+const connectDB = () => {
+    db_URL
+    const options = {
+        useNewURLParser: true, useUnifiedTopology: true,
     }
-    else {
-        console.log(`Successfully Connected to the database`)
-    }
-    
-})
+    return mongoose.connect(db_URL, options)
+}
 
-connectDB = mongoose.connection
+module.exports = connectDB

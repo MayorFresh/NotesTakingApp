@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 require('dotenv').config();
 const user = require('./routes/user')
-const DB = require('./db/database') //to run the mongoose directly from the database
+const connectDB = require('./db/database') //to run the mongoose directly from the database
 const rateLimiter = require('express-rate-limit')
 const helmet = require('helmet')
 const cors = require('cors');
@@ -35,9 +35,15 @@ app.use(express.json())
 app.use('/api/v1/notesapp', user);
 
 
-
-// Server port
+// Server Connection
 const port = process.env.PORT;
-app.listen (port, () => {
-    console.log("Server is listening on Port " + port);
-});
+connectDB()
+.then(() => {
+    console.log(`Successfully Connected to the database`)
+    app.listen (port, () => {
+        console.log("Server is listening on Port " + port);
+    });
+})
+.catch((error) => {
+    console.log('Could not connect to the database\n', error)
+})
