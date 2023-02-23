@@ -1,11 +1,13 @@
 const mongoose = require('mongoose');
-// const chalk = require('chalk')
+require('dotenv').config()
 
 // Connecting to the database 
-const db_URL = 'mongodb://127.0.0.1:27017/NotesTakingApp'
+
+const db_URL = process.env.MONGO_URI
+
 
 mongoose.connect(db_URL, {
-    useNewURLParser: true, useUnifiedTopology: true, useUnifiedTopology: true
+    useNewURLParser: true, useUnifiedTopology: true,
 }, (error, connect) => {
     if(error){
         console.log(`Could not connect to the database`)

@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 require('dotenv').config();
 const user = require('./routes/user')
-require('./db/database') //to run the mongoose directly from the database
+const DB = require('./db/database') //to run the mongoose directly from the database
 const rateLimiter = require('express-rate-limit')
 const helmet = require('helmet')
 const cors = require('cors');
