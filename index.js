@@ -2,8 +2,10 @@ const express = require('express');
 const app = express();
 require('dotenv').config();
 const user = require('./routes/user')
+require('./db/database') //to run the mongoose directly from the database
 const rateLimiter = require('express-rate-limit')
 
+// Rate limiter for the api requests
 const limiter = rateLimiter({
     windowMs: 60 * 1000, // 1 minute
     max: 10, // limit each IP to 10 requests per windowMs
@@ -12,7 +14,7 @@ const limiter = rateLimiter({
 	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 })
 
-// app.use(limiter)
+app.use(limiter)
 
 const swaggerUI = require('swagger-ui-express')
 const swaggerjsDoc = require('swagger-jsdoc')
@@ -22,8 +24,8 @@ const jsDoc = swaggerjsDoc(swaggerOption)
 app.use('/swagger', swaggerUI.serve, swaggerUI.setup(jsDoc))
 
 
-//to run the mongoose directly from the database
-require('./db/database')
+
+
 
 //built-in middleware to parse requests
 app.use(express.json())
@@ -31,9 +33,7 @@ app.use(express.json())
 // default api 
 app.use('/api/v1/notesapp', user);
 
-app.get('/', limiter, (req, res) => {
-    res.send('Hello World!');
-});
+
 
 // Server port
 const port = process.env.PORT;
