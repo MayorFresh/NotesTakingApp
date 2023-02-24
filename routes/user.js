@@ -39,7 +39,7 @@ const {signUp, getUser, signIn, verifyUser, forgotPass, resetPass,
 *               example: Doe
 *             email: 
 *               type: string
-*               example: johndoe@email.com
+*               example: johndoe@gmail.com
 *             password: 
 *               type: string
 *               example: 12345678

@@ -1,11 +1,12 @@
 const express = require('express');
 const app = express();
 require('dotenv').config();
-const user = require('./routes/user')
+const user = require('./routes/user');
 const connectDB = require('./db/database') //to run the mongoose directly from the database
-const rateLimiter = require('express-rate-limit')
+const rateLimiter = require('express-rate-limit');
 const helmet = require('helmet')
 const cors = require('cors');
+// const session = require('express-session');
 
 // Rate limiter for the api requests
 const limiter = rateLimiter({
@@ -20,6 +21,9 @@ const limiter = rateLimiter({
 app.use(helmet());
 app.use(limiter)
 app.use(cors());
+
+
+
 
 const swaggerUI = require('swagger-ui-express')
 const swaggerjsDoc = require('swagger-jsdoc')
