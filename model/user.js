@@ -2,9 +2,6 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 
 const userSchema = new mongoose.Schema({
-    // _id: {
-    //     type: mongoose.Schema.Types.ObjectId
-    // },
     firstname: {
         type: String,
         trim: true,
@@ -39,7 +36,7 @@ const userSchema = new mongoose.Schema({
         type: String, 
         enum: ['Pending', 'Active'],
         default: 'Pending'
-      },
+    },
     confirmationCode: { 
         type: String, 
         unique: true 

@@ -53,14 +53,13 @@ const signUp = async(req, res) => {
         //to generate token when the user signs up
         const token = jwt.sign({user_id: user._id, email},
             process.env.TOKEN_KEY,
-            //{expiresIn: "7200"} //expires in 2 hours
+            
         )
 
         //to add the token the user data at signup
         user.token= token;
 
         //to display the user data after registration
-        // res.status(201).json(user)
         res.status(201).send({Success: "User Registered Successfully! Please check your email", user})
         console.log(user.email + " Registered Successfully")
     
@@ -118,7 +117,7 @@ const signIn = async (req, res) => {
             //create login token
             const token = jwt.sign({user_id: user._id, email}, 
                 process.env.TOKEN_KEY,
-                //{expiresIn: "7200"} //expires in 2 hours
+                
             )
 
             //to save the token 

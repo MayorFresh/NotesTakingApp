@@ -1,5 +1,4 @@
 const nodemailer = require("nodemailer");
-const SMTPPool = require("nodemailer/lib/smtp-pool");
 require('dotenv').config()
 
 const user = process.env.USER
@@ -55,6 +54,6 @@ const sendResetLink = async (name, email, confirmationCode) => {
 
 
 
-  module.exports = {sendConfirmationEmail, sendResetLink}
+module.exports = {sendConfirmationEmail, sendResetLink}
 
   
