@@ -3,7 +3,7 @@ require('dotenv').config()
 
 // Connecting to the database 
 
-const db_URL = process.env.DB_URL
+const db_URL = process.env.MONGO_URI
 
 const connectDB = () => {
     db_URL
