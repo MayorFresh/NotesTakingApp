@@ -30,7 +30,7 @@ const swaggerjsDoc = require('swagger-jsdoc')
 const swaggerOption =  require('./swaggerUI')
 const jsDoc = swaggerjsDoc(swaggerOption)
 
-app.use('/swagger', swaggerUI.serve, swaggerUI.setup(jsDoc))
+app.use('/', swaggerUI.serve, swaggerUI.setup(jsDoc))
 
 
 
