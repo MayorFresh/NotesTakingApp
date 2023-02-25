@@ -18,7 +18,7 @@ const option = {
             },   
             version: "1.0.0"
         },
-        schemes: ["http"],
+        schemes: ["http", "https"],
 
         tags: [
             {
