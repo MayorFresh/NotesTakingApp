@@ -18,8 +18,8 @@ const option = {
             },   
             version: "1.0.0"
         },
-        schemes: ["http", "https"],
-        
+        schemes: ["https", "http"],
+
         servers: [
             {
                 url: "http://localhost:4000/api/v1/notesapp",
