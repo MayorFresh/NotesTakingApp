@@ -30,9 +30,7 @@ const swaggerjsDoc = require('swagger-jsdoc')
 const swaggerOption =  require('./swaggerUI')
 const jsDoc = swaggerjsDoc(swaggerOption)
 
-app.use('/', swaggerUI.serve, swaggerUI.setup(jsDoc))
-
-
+app.use('/swagger', swaggerUI.serve, swaggerUI.setup(jsDoc))
 
 //built-in middleware to parse requests
 app.use(express.json())
@@ -40,6 +38,10 @@ app.use(express.json())
 // default api 
 app.use('/api/v1/notesapp', user);
 
+// To serve the landing page with swaggerUI
+app.get('/', (req, res) => {
+    res.redirect('/swagger')
+})
 
 // Server Connection
 const port = process.env.PORT;
@@ -49,7 +51,7 @@ const start = async () => {
         await connectDB()
         console.log(`Successfully Connected to the database`)
         app.listen (port, () => {
-            console.log("Server is listening on Port " + port);
+            console.log(`Server is listening on Port ${port}`);
         });
     }
     catch (e) {
