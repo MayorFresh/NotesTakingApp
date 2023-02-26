@@ -5,7 +5,10 @@ const option = {
             description: `A note taking application with necessary authentication that allows a user to create an account before the user can perform any of the note operations.\n
             MODE OF OPERATION\n
             1. The user should fill in the required details to create an account 
-            2. A confirmation email will be sent to the user's email where the user can confirm his/her account status
+            2. A confirmation email will be sent to the user's email where the user can confirm his/her account status by:
+            - Copying the code from the mail
+            - Go to verify user endpoint 
+            - Put the copied code into the required textbox
             3. A user can then proceed to signin with the registered details
             4. A response will be received which contains the signin token
             5. The token should be copied and put in the Authorize spot at the top right corner of the webpage

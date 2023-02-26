@@ -182,11 +182,11 @@ const forgotPass = async (req, res) => {
         if (!user) {
            return res.status(404).send("no registered account found")
         } else {
-            //to send the confrimation mail
+            //to send the reset link email
             nodemailer.sendResetLink(
             user.firstname,
             user.email,
-            user.confirmationCode)
+            user.id)
            
             res.status(200).send("A reset link has been sent to your email")
         }

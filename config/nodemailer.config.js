@@ -18,11 +18,13 @@ const sendConfirmationEmail = async (name, email, confirmationCode) => {
         transport.sendMail({
             from: user,
             to: email,
-            subject: "Please confirm your account",
-            html: `<h1>Email Confirmation</h1>
-              <h2>Hello ${name}</h2>
+            subject: "Email Confirmation",
+            html: `
+              <h2>Hi ${name}</h2>
               <p>Welcome to NotesTakingApp. Please confirm your email by clicking on the following link</p>
               <a href=http://localhost:4000/confirm/${confirmationCode}> Click here</a>
+              <p>or copy the code below</p>
+              <h3>${confirmationCode}</h3>
               </div>`
         })
         console.log("email sent successfully")
@@ -33,16 +35,17 @@ const sendConfirmationEmail = async (name, email, confirmationCode) => {
 }
 
 //to send a reset link when a user forgets password
-const sendResetLink = async (name, email, confirmationCode) => {
+const sendResetLink = async (name, email, id) => {
     try {
         transport.sendMail({
             from: user,
             to: email,
-            subject: "Reset Password",
-            html: `<h1>Reset your Password</h1>
-              <h2>Hello ${name}</h2>
-              <p>Reset your password by clicking on the link below</p>
-              <a href=http://localhost:4000/resetpass/> Click here</a>
+            subject: "Password Reset",
+            html: `
+              <h2>Hi ${name}</h2>
+              <p>Reset your password by clicking on the link below. If this waas not requested by you, kindly ignore.</p>
+              <a href=http://localhost:4000/resetpass/${id}> Click here</a>
+              <h4>${id}</h4>
               </div>`
         })
         console.log("email sent successfully")
