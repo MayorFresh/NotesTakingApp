@@ -13,7 +13,7 @@ const {signUp, getUser, signIn, verifyUser, forgotPass, resetPass,
 
 /**
 * @swagger
-* /api/v1/notesapp/signup:
+* /api/v1/notesapp/user/signup:
 *   post:
 *     tags:
 *       - user
@@ -54,13 +54,13 @@ const {signUp, getUser, signIn, verifyUser, forgotPass, resetPass,
 *         description: Server Error
 */
 
-router.route('/signup').post(signUp)
+router.route('/user/signup').post(signUp)
 
 //To get all the users that has created an account
 
 /**
 * @swagger
-* /api/v1/notesapp/getallusers:
+* /api/v1/notesapp/user/getallusers:
 *   get:
 *     tags:
 *       - user
@@ -75,13 +75,13 @@ router.route('/signup').post(signUp)
 *         description: Server Error
 */
 
-router.route('/getallusers').get(getUser)
+router.route('/user/getallusers').get(getUser)
 
 //User signin route 
 
 /**
 * @swagger
-* /api/v1/notesapp/signin:
+* /api/v1/notesapp/user/signin:
 *   post:
 *     tags:
 *       - user
@@ -118,7 +118,7 @@ router.route('/getallusers').get(getUser)
 *         description: Server Error
 */
 
-router.route('/signin').post(signIn)
+router.route('/user/signin').post(signIn)
 
 //for email confirmation
 
@@ -151,7 +151,7 @@ router.route('/confirm/:confirmationCode').get(verifyUser)
 
 /**
 * @swagger
-* /api/v1/notesapp/forgotpass:
+* /api/v1/notesapp/user/forgotpass:
 *   post:
 *     tags:
 *       - user
@@ -180,7 +180,7 @@ router.route('/confirm/:confirmationCode').get(verifyUser)
 *         description: Server Error
 */
 
-router.route('/forgotpass').post(forgotPass)
+router.route('/user/forgotpass').post(forgotPass)
 
 //for reseting the password
 
@@ -230,7 +230,7 @@ router.route('/resetpass/:id').post(resetPass)
 
 /**
 * @swagger
-* /api/v1/notesapp/newnote:
+* /api/v1/notesapp/notes/newnote:
 *   post:
 *     tags:
 *       - notes
@@ -262,14 +262,14 @@ router.route('/resetpass/:id').post(resetPass)
 *         description: Server Error
 */
 
-router.route('/newnote').post(auth, newNote)
+router.route('/notes/newnote').post(auth, newNote)
 
 
 //for editing a note
 
 /**
 * @swagger
-* /api/v1/notesapp/editnote/{id}:
+* /api/v1/notesapp/notes/editnote/{id}:
 *   patch:
 *     tags:
 *       - notes
@@ -304,14 +304,14 @@ router.route('/newnote').post(auth, newNote)
 *         description: Server Error
 */
 
-router.route('/editnote/:id').patch(auth, editNote)
+router.route('/notes/editnote/:id').patch(auth, editNote)
 
 
 //to get all notes created by a user
 
 /**
 * @swagger
-* /api/v1/notesapp/getallnotes:
+* /api/v1/notesapp/notes/getallnotes:
 *   get:
 *     tags:
 *       - notes
@@ -328,13 +328,13 @@ router.route('/editnote/:id').patch(auth, editNote)
 *         description: Server Error
 */
 
-router.route('/getallnotes').get(auth, getAllNotes)
+router.route('/notes/getallnotes').get(auth, getAllNotes)
 
 //to delete a single note created by a user
 
 /**
 * @swagger
-* /api/v1/notesapp/deletenote/{id}:
+* /api/v1/notesapp/notes/deletenote/{id}:
 *   delete:
 *     tags:
 *       - notes
@@ -357,7 +357,7 @@ router.route('/getallnotes').get(auth, getAllNotes)
 *         description: Server Error
 */
 
-router.route('/deletenote/:id').delete(auth, deleteNote)
+router.route('/notes/deletenote/:id').delete(auth, deleteNote)
 
 
 module.exports = router
