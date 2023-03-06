@@ -13,7 +13,7 @@ const {signUp, getUser, signIn, verifyUser, forgotPass, resetPass,
 
 /**
 * @swagger
-* /api/v1/notesapp/user/signup:
+* /api/v1/user/signup:
 *   post:
 *     tags:
 *       - user
@@ -60,7 +60,7 @@ router.route('/user/signup').post(signUp)
 
 /**
 * @swagger
-* /api/v1/notesapp/user/getallusers:
+* /api/v1/user/getallusers:
 *   get:
 *     tags:
 *       - user
@@ -81,7 +81,7 @@ router.route('/user/getallusers').get(getUser)
 
 /**
 * @swagger
-* /api/v1/notesapp/user/signin:
+* /api/v1/user/signin:
 *   post:
 *     tags:
 *       - user
@@ -124,7 +124,7 @@ router.route('/user/signin').post(signIn)
 
 /**
 * @swagger
-* /api/v1/notesapp/confirm/{confirmationCode}:
+* /api/v1/confirm/{confirmationCode}:
 *   get:
 *     tags:
 *       - user
@@ -151,7 +151,7 @@ router.route('/confirm/:confirmationCode').get(verifyUser)
 
 /**
 * @swagger
-* /api/v1/notesapp/user/forgotpass:
+* /api/v1/user/forgotpass:
 *   post:
 *     tags:
 *       - user
@@ -186,7 +186,7 @@ router.route('/user/forgotpass').post(forgotPass)
 
 /**
 * @swagger
-* /api/v1/notesapp/resetpass/{id}:
+* /api/v1/resetpass/{id}:
 *   post:
 *     tags:
 *       - user
@@ -230,7 +230,7 @@ router.route('/resetpass/:id').post(resetPass)
 
 /**
 * @swagger
-* /api/v1/notesapp/notes/newnote:
+* /api/v1/notes/newnote:
 *   post:
 *     tags:
 *       - notes
@@ -269,7 +269,7 @@ router.route('/notes/newnote').post(auth, newNote)
 
 /**
 * @swagger
-* /api/v1/notesapp/notes/editnote/{id}:
+* /api/v1/notes/editnote/{id}:
 *   patch:
 *     tags:
 *       - notes
@@ -311,7 +311,7 @@ router.route('/notes/editnote/:id').patch(auth, editNote)
 
 /**
 * @swagger
-* /api/v1/notesapp/notes/getallnotes:
+* /api/v1/notes/getallnotes:
 *   get:
 *     tags:
 *       - notes
@@ -334,7 +334,7 @@ router.route('/notes/getallnotes').get(auth, getAllNotes)
 
 /**
 * @swagger
-* /api/v1/notesapp/notes/deletenote/{id}:
+* /api/v1/notes/deletenote/{id}:
 *   delete:
 *     tags:
 *       - notes

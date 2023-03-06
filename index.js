@@ -36,7 +36,7 @@ app.use('/swagger', swaggerUI.serve, swaggerUI.setup(jsDoc))
 app.use(express.json())
 
 // default api 
-app.use('/api/v1/notesapp', user);
+app.use('/api/v1', user);
 
 // To serve the landing page with swaggerUI
 app.get('/', (req, res) => {
